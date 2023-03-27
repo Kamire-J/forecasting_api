@@ -1,0 +1,3 @@
+{
+    "python.defaultInterpreterPath": "./api_env/bin/python"
+}
