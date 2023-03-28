@@ -87,7 +87,7 @@ def fit_model(request: FitIn):
 
         response["success"] = True # success key
 
-        response["message"] = f"Trained and saved '{filename}'" # message
+        response["message"] = f"Trained and saved '{filename}.'Metrics AIC {model.aic}, BIC {model.bic}." # message
 
     except Exception as e:
         response["success"] = False

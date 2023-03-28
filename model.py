@@ -99,6 +99,8 @@ class GarchModel:
         """
         # Train Model, attach to `self.model`
         self.model = arch_model(self.data, p=p, q=q, rescale=False).fit(disp=0)
+        self.aic = self.model.aic
+        self.bic = self.model.bic
         
 
     def __clean_prediction(self, prediction):
