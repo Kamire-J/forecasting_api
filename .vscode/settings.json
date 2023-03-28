@@ -1,3 +1,4 @@
 {
-    "python.defaultInterpreterPath": "./api_env/bin/python"
+    "python.defaultInterpreterPath": "./api_env/bin/python",
+    "python.analysis.typeCheckingMode": "off"
 }
