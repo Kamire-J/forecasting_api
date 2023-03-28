@@ -21,6 +21,20 @@ class FitOut(FitIn):
     message: str
 
 
+
+# PredictIn Class
+class PredictIn(BaseModel):
+    ticker: str
+    n_days: int
+
+
+# PredictOut Class
+class PredictOut(PredictIn):
+    success: bool
+    forecast: dict
+    message: str
+
+
 # Helper function to aid in building the model by connecting database
 def build_model(ticker, use_new_data):
     # Create DB connection
@@ -81,6 +95,49 @@ def fit_model(request: FitIn):
         response["message"] = str(e)
 
 
+    return response
+
+# Predict path and function
+@app.post("/predict", status_code=200, response_model=PredictOut)
+def get_prediction(request: PredictIn):
+
+    # Create `response` dictionary from `request`
+    response = request.dict()
+
+    # Create try block to handle exceptions
+    try:
+        # Build model with `build_model` function
+        model = build_model(ticker=request.ticker, use_new_data=False)
+
+        # Load stored model
+        model.load()
+
+        # Generate prediction
+        prediction = model.predict_volatility(horizon=request.n_days)
+
+        # Add `"success"` key to `response`
+        response["success"] = True
+
+        # Add `"forecast"` key to `response`
+        response["forecast"] = prediction
+
+        # Add `"message"` key to `response`
+        response["message"] = ""
+
+    # Create except block
+    except Exception as e:
+
+        # Add `"success"` key to `response`
+        response["success"] = False
+
+        # Add `"forecast"` key to `response`
+        response["forecast"] = {}
+
+        #  Add `"message"` key to `response`.
+        response["message"] = str(e)
+
+
+    # Return response
     return response
 
 
